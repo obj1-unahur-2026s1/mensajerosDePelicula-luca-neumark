@@ -1,9 +1,14 @@
-import example.pepita
+import mensajeros.*
+import destinos.*
+import paquetes.*
+import transportes.*
 
-describe "group of tests for pepita" {
+ 
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+describe "group of tests" {
+
+  test "" {
+    
   }
 
 }
