@@ -11,7 +11,7 @@ object roberto {
     method cambiarTransporte(transporteNuevo) {
       transporte = transporteNuevo
     }
-    method puedeLlevarA(destino) = destino.dejaPasarA(self) and paquete.estaPago()
+    method puedeLlevarA(destino, paquete) = destino.dejaPasarA(self) and paquete.estaPago()
 }
 
 
@@ -22,25 +22,24 @@ object neo {
     method cargarCredito(nuevoCredito) {
         credito += nuevoCredito
     }
-    method puedeLlevarA(destino) = destino.dejaPasarA(self) and paquete.estaPago()
+    method puedeLlevarA(destino, paquete) = destino.dejaPasarA(self) and paquete.estaPago()
 }
 
 
 object chuck {
     method peso() = 80
     method puedeLlamar() = true
-    method puedeLlevarA(destino) = destino.dejaPasarA(self) and paquete.estaPago()
+    method puedeLlevarA(destino, paquete) = destino.dejaPasarA(self) and paquete.estaPago()
 }
 
 
-object empresaPaqueteria {
-    const mensajeros = []
-    method contratarMensajero(mensajero) {mensajeros.add(mensajero)}
-    method despedirMensajero(mensajero) {mensajeros.remove(mensajero)}
-    method despedirATodos() {mensajeros.clear()}
-    method esGrande() = mensajeros.size() > 2
-    method puedeEntregarElPrimerEmpleado(destino) = paquete.puedeSerEntregado(mensajeros.first(), destino)
-    method ultimoMensajero() = mensajeros.last()
-    method pesoDelUltimoMensajero() = ultimoMensajero().peso()
+//Mensajero agregado
+object hermes {
+    method peso() = 40
+    method puedeLlamar() = true
+    method puedeLlevarA(destino, paquete) = destino.dejaPasarA(self) and paquete.estaPago()
 }
+
+
+
 

@@ -2,13 +2,112 @@ import mensajeros.*
 import destinos.*
 import paquetes.*
 import transportes.*
+import empresa.*
 
  
 
 describe "group of tests" {
 
-  test "" {
-    
+  test "Roberto puede llevar un paquete que está pago en un camión que tiene un acoplado" {
+    roberto.cambiarTransporte(camion)
+    paquete.serPagado()
+    assert.that(roberto.puedeLlevarA(puenteBrooklyn, paquete))
   }
 
+  test "Neo con crédito no puede llevar un paquete que no está pago a la matrix." {
+    assert.that(neo.puedeLlamar())
+    assert.notThat(neo.puedeLlevarA(laMatrix, paquete))
+  }
+
+  test "Se puede contratar a un mensajero" {
+    empresaPaqueteria.contratarMensajero(roberto)
+    assert.that(empresaPaqueteria.mensajeros().size() > 0)
+  }
+
+  test "Se puede despedir a un mesajero" {
+    empresaPaqueteria.despedirMensajero(roberto)
+    assert.equals(0, empresaPaqueteria.mensajeros().size())
+  }
+
+  test "Se puede depedir a todos los mensajeros" {
+    empresaPaqueteria.contratarMensajero(roberto)
+    empresaPaqueteria.contratarMensajero(chuck)
+    empresaPaqueteria.despedirATodos()
+    assert.equals(0, empresaPaqueteria.mensajeros().size())
+  }
+
+  test "La empresa es grande si tiene más de 2 mensajeros" {
+    empresaPaqueteria.contratarMensajero(hermes)
+    empresaPaqueteria.contratarMensajero(roberto)
+    empresaPaqueteria.contratarMensajero(neo)
+    assert.that(empresaPaqueteria.esGrande())
+  }
+
+  test "El primer empleado puede entregar el paquete" {
+    empresaPaqueteria.contratarMensajero(hermes)
+    empresaPaqueteria.contratarMensajero(chuck)
+    assert.that(empresaPaqueteria.puedeEntregarElPrimerEmpleado(puenteBrooklyn, paquetito))
+  }
+
+  test "Se puede saber el peso del ultimo mensajero" {
+    empresaPaqueteria.contratarMensajero(chuck)
+    empresaPaqueteria.contratarMensajero(roberto)
+    empresaPaqueteria.contratarMensajero(hermes)
+    assert.equals(40, empresaPaqueteria.ultimoMensajero().peso())
+  }
+
+  test "la empresa puede entregar un paquete si al menos un mensajeros puede hacerlo" {
+    empresaPaqueteria.contratarMensajero(hermes)
+    empresaPaqueteria.contratarMensajero(chuck)
+    assert.that(empresaPaqueteria.puedeSerEntregadoPorAlgunMensajero(laMatrix, paqueteFragil))
+  }
+  
+  test "Se pueden obtener todos los mensajeros capaces de entregar un paquete" {
+    empresaPaqueteria.contratarMensajero(hermes)
+    empresaPaqueteria.contratarMensajero(chuck)
+    paquete.serPagado()
+    assert.equals(2, empresaPaqueteria.mensajerosCapacesDeEntregar(puenteBrooklyn, paquete).size())
+  }
+
+  test "La mensajería tiene sobrepeso si el promedio supera los 500kg" {
+    empresaPaqueteria.contratarMensajero(neo)
+    empresaPaqueteria.contratarMensajero(chuck)
+    empresaPaqueteria.contratarMensajero(hermes)
+    assert.notThat(empresaPaqueteria.sobrepeso())
+  }
+
+  test "La empresa envía un  paquete si hay un mesajero capaz de entregarlo" {
+    empresaPaqueteria.contratarMensajero(hermes)
+    paquete.serPagado()
+    empresaPaqueteria.enviarPaquete(laMatrix, paquete)
+    assert.equals(1, empresaPaqueteria.enviados().size())
+  }
+
+  test "Se puede conocer la facturación de la empresa" {
+    empresaPaqueteria.contratarMensajero(hermes)
+    paquete.serPagado()
+    empresaPaqueteria.enviarPaquete(laMatrix, paqueteFragil)
+    empresaPaqueteria.enviarPaquete(puenteBrooklyn, paquete)
+    assert.equals(120, empresaPaqueteria.facturacionDeLaEmpresa())
+  }
+
+  test "Se pueden enviar todos los paquetes de la empresa" {
+    empresaPaqueteria.contratarMensajero(hermes)
+    paquete.serPagado()
+    empresaPaqueteria.enviarPaquete(laMatrix, paqueteFragil)
+    empresaPaqueteria.enviarPaquete(puenteBrooklyn, paquete)
+    assert.equals(2, empresaPaqueteria.enviados().size())
+  }
+
+  test "Se puede encontrar el paquete pendiente más caro y enviarlo" {
+    empresaPaqueteria.contratarMensajero(hermes)
+    empresaPaqueteria.enviarPaquete(laMatrix, paquetonViajero)
+    empresaPaqueteria.enviarPaquete(puenteBrooklyn, paquete)
+    empresaPaqueteria.enviarPaquetePendienteMasCaro(puenteBrooklyn)
+    assert.equals(2, empresaPaqueteria.pendientes().size())
+  }
+
+  test "Hermes puede entregar el paquete fragil" {
+  assert.that(hermes.puedeLlevarA(puenteBrooklyn, paqueteFragil))
+  }
 }

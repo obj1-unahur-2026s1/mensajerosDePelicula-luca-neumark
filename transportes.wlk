@@ -6,7 +6,7 @@ object camion {
     var cantAcoplados = 1
     
     method peso() = 500 * cantAcoplados
-    method cambiarCantAcoplados(NuevaCantidadAcoplados) {
-        cantAcoplados = NuevaCantidadAcoplados
+    method cambiarCantAcoplados(nuevaCantidadAcoplados) {
+        cantAcoplados = nuevaCantidadAcoplados
     }
 }
